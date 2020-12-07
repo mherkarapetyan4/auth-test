@@ -1,6 +1,9 @@
 import { Routes } from "../../routes";
 import styled from "styled-components"
 const AppContainer = () => {
+  // const isLoggedIn = storage(LOCAL_STORAGE_KEY);
+  // console.log(!!isLoggedIn, "ads")
+
   return <ContainerWrapper>
     {/* handle routing  */}
   <Routes />

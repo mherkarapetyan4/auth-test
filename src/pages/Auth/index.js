@@ -5,4 +5,4 @@ const Auth = () => {
   return <AuthWrapper><Login /></AuthWrapper>
 }
 
-export default Auth;
+export default Auth

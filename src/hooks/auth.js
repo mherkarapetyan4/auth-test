@@ -2,8 +2,9 @@ import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { USERS } from "../constants/users";
-import { getUserById, setIsAuth } from "../store/actions/app";
-import axios from "axios";
+import {getUserById, setIsAuth, setUser} from "../store/actions/app";
+import {deleteKeyStorage} from "../util";
+import {LOCAL_STORAGE_KEY} from "../constants/endpoints";
 
 
 const useAuth = () => {
@@ -16,7 +17,6 @@ const useAuth = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const onClickHandler = () => {
-    console.log("logiigigigign");
     if(!isValid) {
       return false
     }
@@ -25,8 +25,7 @@ const useAuth = () => {
 
 
     // dispatch(setIsAuth(true));
-    dispatch(getUserById(userId))
-
+    dispatch(getUserById(userId, history))
   }
 
   useEffect(() => {
@@ -45,15 +44,19 @@ const useAuth = () => {
         return;
       }
 
-      // if(foundedUser && foundedUser.password === password) {
         setErrorMessage("")
         setUserId(foundedUser.id)
           setIsValid(true);
-      // }
-      console.log("hello world", foundedUser, password)
 
     }
   }, [username, password, isFinishedLogin])
+
+  const logout = () => {
+    deleteKeyStorage(LOCAL_STORAGE_KEY);
+    dispatch(setUser(null));
+    dispatch(setIsAuth(false));
+    history.replace('/auth');
+  }
 
   return {
     username, password, 
@@ -61,7 +64,8 @@ const useAuth = () => {
     onClickHandler,
     setIsFinishedLogin,
     isValid,
-    errorMessage
+    errorMessage,
+    logout
   }
 }
 
